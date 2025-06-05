@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Productos;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProductosController extends Controller
 {
@@ -48,7 +48,7 @@ class ProductosController extends Controller
         $codigo = $request->codigo;
         $codigo = Productos::where('codigo', $codigo)->first();
 
-        if($codigo) {
+        if ($codigo) {
             return response()->json(['success' => true, 'codigo' => $codigo]);
         } else {
             return response()->json(['success' => false, 'message' => 'Código no encontrado']);
@@ -56,5 +56,24 @@ class ProductosController extends Controller
 
         return response()->json(['success' => true]);
     }
-}
 
+    public function stockProductos()
+    {
+        return view('stock-productos');
+    }
+
+    public function dataProductos(Request $request)
+    {
+        if(!$request->ajax()) {
+            abort(404);
+        }
+        $stock = Productos::select(['codigo','codigo_barra_unitario','codigo_barra_embalaje', 'descripcion', 'stock_total', 'stock_reservado'])
+            ->get();
+
+        return DataTables::of($stock)
+            ->addColumn('disponible', function ($stock) {
+                return $stock->stock_total - $stock->stock_reservado;
+            })
+            ->make(true);
+    }
+}

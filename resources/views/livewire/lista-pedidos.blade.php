@@ -30,8 +30,8 @@
                                     <span class="text-yellow-600">En proceso</span>
                                 @break
 
-                                @case('completado')
-                                    <span class="text-green-600">Completado</span>
+                                @case('para_despacho')
+                                    <span class="text-green-600">Para Despachar</span>
                                 @break
 
                                 @case('cancelado')

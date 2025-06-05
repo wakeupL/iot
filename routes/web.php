@@ -19,15 +19,19 @@ Route::view('dashboard', 'dashboard')
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::get('bodega', function () {
-        return view('bodega');})->name('bodega');
+    Route::get('bodega', function () {return view('bodega');})->name('bodega');
 
     Route::get('ingreso-material', [IngresoMaterialController::class, 'index'])->name('ingreso-material.index');
     Route::post('registrar-pedido', [PedidosController::class, 'registrarPedido'])->name('pedido.registrar');
     Route::get('separar-pedido/{id}', [PedidosController::class, 'prepararPedido'])->name('pedido.preparar');
     Route::get('pedidos', ListaPedidos::class)->name('pedidos.index');
+    Route::post('generar-qr/{id}', [PedidosController::class, 'generarQR'])->name('pedido.generar-qr');
+    Route::get('verQr/{id}', [PedidosController::class, 'verQr'])->name('pedido.ver-qr');
+    Route::get('stock-productos', [ProductosController::class, 'stockProductos'])->name('productos.stock');
+    Route::match(['GET','POST'], 'stock-productos/data', [ProductosController::class, 'dataProductos'])->name('productos.data');
 
-    });
+});
+
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');

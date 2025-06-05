@@ -33,7 +33,7 @@ class ListaPedidos extends Component
                     ->orWhere('cliente', 'like', '%' . $this->busqueda . '%')
                     ->orWhere('responsable', 'like', '%' . $this->busqueda . '%')
                     ->orderBy('created_at', 'desc')
-                    ->paginate(5),
+                    ->paginate(10),
             ]
         );
     }

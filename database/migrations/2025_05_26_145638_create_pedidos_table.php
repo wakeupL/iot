@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('nota_venta');
             $table->string('responsable');
-            $table->string('codigo_qr')->nullable(); // Código QR asociado al pedido
+            $table->text('codigo_qr')->nullable(); // Código QR asociado al pedido
             $table->integer('estado_qr')->default(0); // Estado del código QR (0: no generado, 1: generado)
+            $table->integer('cantidad_bultos')->default(0); // Cantidad de bultos en el pedido
             $table->string('estado')->default('en_proceso'); // en_proceso, completado, despachado, entregado
             $table->dateTime('fecha_separacion')->nullable();
             $table->dateTime('fecha_entrega')->nullable();

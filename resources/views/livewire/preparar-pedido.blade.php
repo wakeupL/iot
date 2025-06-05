@@ -29,9 +29,9 @@
                             </flux:badge>
                         @break
 
-                        @case('completado')
-                            <flux:badge color="green" icon="check">
-                                Completado
+                        @case('para_despacho')
+                            <flux:badge color="red" icon="check">
+                                Listo para Despacho
                             </flux:badge>
                         @break
 
@@ -51,8 +51,9 @@
                                 </flux:modal.trigger>
 
                                 <flux:modal name="generar-qr" class="md:w-96">
-                                    <form action="">
+                                    <form action="{{ route('pedido.generar-qr', $pedido->id) }}" method="POST" target="_blank">
                                         @csrf
+                                        <input type="hidden" name="pedido_id" value="{{ $pedido->id }}">
                                         <div class="space-y-6">
                                             <div>
                                                 <flux:heading size="lg" class="text-center">Generar QR</flux:heading>
@@ -71,7 +72,7 @@
                                             <div class="flex">
                                                 <flux:spacer />
 
-                                                <flux:button type="submit" variant="primary">GENERAR QR</flux:button>
+                                                <flux:button type="submit" variant="primary" onclick="recargarQr()">GENERAR QR</flux:button>
                                             </div>
                                         </div>
                                     </form>
@@ -79,9 +80,9 @@
                             @break
 
                             @case(1)
-                                <flux:badge color="green" icon="check">
-                                    QR Generado
-                                </flux:badge>
+                                <flux:button target="_blank" href="{{route('pedido.ver-qr', $pedido->id)}}" variant="primary" icon="check">
+                                    Ver QR
+                                </flux:button>
                             @break
 
                             @default
@@ -216,10 +217,19 @@
                         <td class="px-6 py-4">{{ $producto->cantidad }}</td>
                         <td class="px-6 py-4">{{ $producto->responsable }}</td>
                         <td class="px-6 py-4">
-                            <flux:button wire:click="eliminarProductoSeparado({{ $producto->id }})" variant="danger"
-                                size="sm">
+                            @if ($pedido->estado_qr == 1)
+                                <flux:button  disabled
+                                icon="trash">
                                 Eliminar
                             </flux:button>
+                            @else
+                                <flux:button wire:click="eliminarProducto({{ $producto->id }})" variant="danger"
+                                icon="trash">
+                                Eliminar
+                            </flux:button>
+                            @endif
+                            
+
                         </td>
                     </tr>
                 @empty
@@ -232,5 +242,12 @@
             </tbody>
         </table>
 
+<script>
+    function recargarQr() {
+        setTimeout(() => {
+            window.location.reload();
+        }, 1500); // Espera 1.5 segundos para que dé tiempo a abrir el PDF
+    }
+</script>
 
     </div>

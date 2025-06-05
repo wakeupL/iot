@@ -71,7 +71,7 @@
                 </div>
 
                 <div class="lg:pt-10 md:pt-5 text-md font-semibold text-neutral-900 dark:text-neutral-100">
-                    <flux:button variant="primary" :href="route('dashboard')" icon="square-3-stack-3d">
+                    <flux:button variant="primary" :href="route('productos.stock')" icon="square-3-stack-3d" wire:navigate.hover>
                         {{ __('CONSULTAR STOCK') }}</flux:button>
                 </div>
             </div>
